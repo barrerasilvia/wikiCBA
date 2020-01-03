@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<style>
+
+
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+.form-inline {  
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+}
+
+.form-inline label {
+  margin: 5px 10px 5px 0;
+}
+
+.form-inline input {
+  vertical-align: middle;
+  margin: 5px 10px 5px 0;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+.form-inline a {
+  vertical-align: middle;
+  margin: 5px 10px 5px 0;
+  padding: 10px;
+  color:#fff;
+  font-weight: bold;
+  
+}
+
+
+.button {
+  padding:10px;
+  background-color: dodgerblue;
+  border: 1px solid #ddd;
+  color: white;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: royalblue;
+}
+
+@media (max-width: 800px) {
+  .form-inline input,a {
+    margin: 10px 0;
+  }
+  
+  .form-inline {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+  
+input:focus,a:focus,button:focus {
+    outline: 3px solid #2E1BA6;
+    border-color: transparent;
+  }
+
+table { 
+	width: 750px; 
+	border-collapse: collapse; 
+	margin:50px auto;
+	}
+
+/* Zebra striping */
+
+tr{ 
+	background: #eee; 
+	}
+
+th { 
+	background: #3498db; 
+	color: white; 
+	font-weight: bold; 
+	}
+
+td, th { 
+	padding: 10px; 
+	border: 1px solid #ccc; 
+	text-align: left; 
+	font-size: 18px;
+	}
+
+/* 
+Max width before this PARTICULAR table gets nasty
+This query will take effect for any screen smaller than 760px
+and also iPads specifically.
+*/
+@media 
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+	table { 
+	  	width: 100%; 
+	}
+
+	/* Force table to not be like tables anymore */
+	table, thead, tbody, th, td, tr { 
+		display: block; 
+	}
+	
+	/* Hide table headers (but not display: none;, for accessibility) */
+	thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+	tr { border: 1px solid #ccc; }
+	
+	td { 
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+		padding-left: 50%; 
+	}
+
+	td:before { 
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+		/* Label the data */
+		content: attr(data-column);
+
+		color: #000;
+		font-weight: bold;
+	}
+
+
+}
+.header{
+ background: #3498db;
+ 
+}
+
+.bottom{
+  padding: 10px;
+  background: #ccc;
+}
+footer {
+    padding:15px;  
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   background-color:#3498db;
+   color: white;
+   text-align: center;
+   
+}
+
+
+        .centerThings {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 50vw;
+}
+
+.centerForm {
+  display: block;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  width: 80vw;
+}
+.review{
+  background: orange;
+}
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color:black;
+  opacity: 1; /* Firefox */
+}
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script>
+  
+  var script_url = "https://script.google.com/macros/s/AKfycbyrR0jWWayMtIJIoCxicZiEuaeJCupIOGkuqz-aBqAlg-yA9z6y/exec";
+  read_value();
+ 
+  function insert_value() {
+    
+	$("#re").css("visibility","hidden");
+	
+
+    var description=$("#description").val();
+	  var type= $("#type").val();
+    var summary=$("#summary").val();
+    var wcag=$("#wcag").val();
+    var recommendation=$("#recommendation").val();
+    var name=$("#name").val();
+	
+    var url = script_url+"?callback=ctrlq&type="+ type +"&summary="+ summary+ "&description="+ description +"&wcag="+ wcag +"&recommendation="+ recommendation +"&name="+ name +"&action=insert";
+  
+
+    var request = jQuery.ajax({
+      crossDomain: true,
+      url: url ,
+      method: "GET",
+      dataType: "jsonp"
+    });
+
+  }
+
+  
+// print the returned data
+function ctrlq(e) {
+  
+	
+	$("#re").html(e.result);
+	$("#re").css("visibility","visible");
+	read_value();
+	
+}
+  
+ 
+  
+function read_value() {
+
+  
+ var url = script_url+"?action=read";
+
+$.getJSON(url, function (json) {
+
+    // Set the variables from the results array
+   
+   
+  
+
+        // CREATE DYNAMIC TABLE.
+        var table = document.createElement("table");
+        table.setAttribute("id", "myTable");
+       
+       
+     
+
+       var header = table.createTHead();
+        var row = header.insertRow(0); 
+        row.insertCell(0).outerHTML = "<th>TYPE</th>";
+        row.insertCell(1).outerHTML="<th>SUMMARY</th>";
+        row.insertCell(2).outerHTML = "<th>DESCRIPTION</th>";
+        row.insertCell(3).outerHTML = "<th>WCAG</th>";
+        row.insertCell(4).outerHTML = "<th>RECOMMENDATION</th>";
+        var tbody = table.createTBody();
+		   
+        // ADD JSON DATA TO THE TABLE AS ROWS.
+        for (var i = 0; i < json.records.length; i++) {
+
+            tr = tbody.insertRow(-1);
+				    var tabCell = tr.insertCell(-1);
+                tabCell.innerHTML = json.records[i].TYPE;
+                tabCell.setAttribute("data-column","TYPE");
+				        tabCell = tr.insertCell(-1);
+                tabCell.innerHTML=json.records[i].SUMMARY;
+                tabCell.setAttribute("data-column","SUMMARY");
+                tabCell=tr.insertCell(-1);
+                tabCell.innerHTML = json.records[i].DESCRIPTION;
+                tabCell.setAttribute("data-column","DESCRIPTION");
+                tabCell = tr.insertCell(-1);
+                tabCell.innerHTML = json.records[i].WCAG;
+                tabCell.setAttribute("data-column","WCAG");
+                tabCell = tr.insertCell(-1);
+				        tabCell.innerHTML = json.records[i].RECOMMENDATION;
+                tabCell.setAttribute("data-column","RECOMMENDATION");
+                if(json.records[i].Time_stamp!="")
+                        tr.setAttribute("class", "review");
+              
+            }
+            
+
+        // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+        var divContainer = document.getElementById("showData");
+        divContainer.innerHTML = "";
+        divContainer.appendChild(table);
+        //SEARCH BY
+        var $filterableRows = $("#myTable").find("tr").not(":first"),
+	    	$inputs = $(".search-key");
+
+        $inputs.on("input", function() {
+
+      	$filterableRows.hide().filter(function() {
+  	    return $(this).find("td").filter(function() {
+    
+        var tdText = $(this).text().toLowerCase(),
+        inputValue = $("#" + $(this).data("column")).val().toLowerCase();
+         
+    	  return tdText.indexOf(inputValue) != -1;
+    
+        }).length == $(this).find("td").length;
+        }).show();
+
+        });
+        
+
+
+
+
+		$("#re").css("visibility","visible");
+    });   
+
+
+     
+ 
+  }
+  
+ 
+</script>  
+</head>
+<body>
+<div align="center">
+
+  <div class="header">
+    <h1>WIKI ESSENTIAL CBA</h1>
+  <div class="centerForm form-inline"> 
+    <p><strong>Search by: </strong></p>
+    <input type="text" id="TYPE" class="search-key" placeholder="TYPE">
+    <input type="text" id="SUMMARY" class="search-key" placeholder="SUMMARY">
+    <input type="text" id="DESCRIPTION" class="search-key" placeholder="DESCRIPTION">
+    <input type="text" id="WCAG" class="search-key" placeholder="WCAG">
+    <input type="text" id="RECOMMENDATION" class="search-key" placeholder="RECOMMENDATION">
+    
+    <i class="fa fa-search"></i>
+    </div>
+    <div class="centerThings form-inline">
+
+      <a href="https://docs.google.com/spreadsheets/d/1g_rb2NTA1amkQJeVJnMTSG2hmtqirj8rnMukzICBwCI/edit#gid=0" target="_blank">Open Spread Sheet </a>
+    <a href="#newissue">Add a new issue</a>
+    </div>
+  </div>  
+
+<div id="showData"></div>
+<div class="bottom">
+<p id="newissue"><strong>Complete the form to add a new issue</strong></p>
+<form class="centerForm form-inline">
+ 
+
+  <label for="type">TYPE</label>
+  <input id="type" name="type" required>
+  <label for="summary">SUMMARY</label>
+  <input id="summary" name="summary" required>
+  <label for="description">DESCRIPTION</label>
+  <input id="description" name="description" required>
+  <label for="wcag">WCAG</label>
+  <input id="wcag" name="wcag" required>
+  <label for="recommendation">RECOMMENDATION</label>
+  <input id="recommendation" name="recommendation" required>
+  <label for="name">AUTHOR</label>
+  <input id="name" name="name" required>
+  
+   <!-- <button  onclick="read_value()" title="Apretar este boton">Read</button> -->
+
+</form>
+<input type="button" class="button" id = "b1" onClick="insert_value()" value="INSERT NEW ISSUE" />
+
+<br>
+
+<p id="re"></p>
+</div>
+
+</div>
+</body>
+<footer >
+<p>SILVIA BARRERA | All Rights Reserved</p>
+</footer>
+<html>
+
+
+
+
