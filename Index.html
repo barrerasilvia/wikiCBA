@@ -201,14 +201,14 @@ footer {
 	$("#re").css("visibility","hidden");
 	
 
-    var description=$("#description").val();
+    var tool=$("#tool").val();
 	  var type= $("#type").val();
     var summary=$("#summary").val();
     var wcag=$("#wcag").val();
     var recommendation=$("#recommendation").val();
     var name=$("#name").val();
 	
-    var url = script_url+"?callback=ctrlq&type="+ type +"&summary="+ summary+ "&description="+ description +"&wcag="+ wcag +"&recommendation="+ recommendation +"&name="+ name +"&action=insert";
+    var url = script_url+"?callback=ctrlq&type="+ type +"&summary="+ summary+ "&tool="+ tool +"&wcag="+ wcag +"&recommendation="+ recommendation +"&name="+ name +"&action=insert";
   
 
     var request = jQuery.ajax({
@@ -254,9 +254,9 @@ $.getJSON(url, function (json) {
 
        var header = table.createTHead();
         var row = header.insertRow(0); 
-        row.insertCell(0).outerHTML = "<th>TYPE</th>";
-        row.insertCell(1).outerHTML="<th>SUMMARY</th>";
-        row.insertCell(2).outerHTML = "<th>DESCRIPTION</th>";
+        row.insertCell(0).outerHTML = "<th>TESTING TOOL</th>";
+        row.insertCell(1).outerHTML = "<th>TYPE</th>";
+        row.insertCell(2).outerHTML="<th>SUMMARY</th>";
         row.insertCell(3).outerHTML = "<th>WCAG</th>";
         row.insertCell(4).outerHTML = "<th>RECOMMENDATION</th>";
         var tbody = table.createTBody();
@@ -266,14 +266,14 @@ $.getJSON(url, function (json) {
 
             tr = tbody.insertRow(-1);
 				    var tabCell = tr.insertCell(-1);
+                tabCell.innerHTML=json.records[i].TOOL;
+                tabCell.setAttribute("data-column","TOOL");
+                tabCell = tr.insertCell(-1);
                 tabCell.innerHTML = json.records[i].TYPE;
                 tabCell.setAttribute("data-column","TYPE");
 				        tabCell = tr.insertCell(-1);
                 tabCell.innerHTML=json.records[i].SUMMARY;
                 tabCell.setAttribute("data-column","SUMMARY");
-                tabCell=tr.insertCell(-1);
-                tabCell.innerHTML = json.records[i].DESCRIPTION;
-                tabCell.setAttribute("data-column","DESCRIPTION");
                 tabCell = tr.insertCell(-1);
                 tabCell.innerHTML = json.records[i].WCAG;
                 tabCell.setAttribute("data-column","WCAG");
@@ -331,9 +331,9 @@ $.getJSON(url, function (json) {
     <h1>WIKI ESSENTIAL CBA</h1>
   <div class="centerForm form-inline"> 
     <p><strong>Search by: </strong></p>
+    <input type="text" id="TOOL" class="search-key" placeholder="TOOL">
     <input type="text" id="TYPE" class="search-key" placeholder="TYPE">
     <input type="text" id="SUMMARY" class="search-key" placeholder="SUMMARY">
-    <input type="text" id="DESCRIPTION" class="search-key" placeholder="DESCRIPTION">
     <input type="text" id="WCAG" class="search-key" placeholder="WCAG">
     <input type="text" id="RECOMMENDATION" class="search-key" placeholder="RECOMMENDATION">
     
@@ -351,13 +351,12 @@ $.getJSON(url, function (json) {
 <p id="newissue"><strong>Complete the form to add a new issue</strong></p>
 <form class="centerForm form-inline">
  
-
+  <label for="tool">TOOL</label>
+  <input id="tool" name="tool" required>
   <label for="type">TYPE</label>
   <input id="type" name="type" required>
   <label for="summary">SUMMARY</label>
   <input id="summary" name="summary" required>
-  <label for="description">DESCRIPTION</label>
-  <input id="description" name="description" required>
   <label for="wcag">WCAG</label>
   <input id="wcag" name="wcag" required>
   <label for="recommendation">RECOMMENDATION</label>
